@@ -2,7 +2,7 @@
 #define __GPIO_H
 
 #include "define.h"
-#include "stm32f103c8t6.h"
+#include "stm32f103xx.h"
 
 typedef struct
 {
@@ -210,5 +210,24 @@ typedef enum
        GPIO_MODE_OUTPUT_50HZ_AF_PP = (2 << 2) | 3,
        GPIO_MODE_OUTPUT_50HZ_AF_OPEN_DRAIN = (3 << 2) | 3,
 } GPIO_CR;
+
+typedef struct
+{
+
+} GPIO_PinConfig_t;
+typedef struct
+{
+
+       struct GPIO_param
+       {
+
+       } param;
+
+       struct GPIO_api
+       {
+
+       } api;
+
+} GPIO_Handle_t;
 
 #endif
