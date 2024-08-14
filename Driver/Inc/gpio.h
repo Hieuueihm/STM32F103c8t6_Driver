@@ -1,193 +1,23 @@
 #ifndef __GPIO_H
 #define __GPIO_H
 
-#include "define.h"
 #include "stm32f103xx.h"
+#include "rcc.h"
 
 typedef struct
 {
-       BUNION(CRL, unsigned long,
-              MODE_0, 2,
-              CNF_0, 2,
-              MODE_1, 2,
-              CONF_1, 2,
-              MODE_2, 2,
-              CNF_2, 2,
-              MODE_3, 2,
-              CONF_3, 2,
-              MODE_4, 2,
-              CNF_4, 2,
-              MODE_5, 2,
-              CONF_5, 2,
-              MODE_6, 2,
-              CNF_6, 2,
-              MODE_7, 2,
-              CONF_7, 2);
-       BUNION(CRH, unsigned long,
-              MODE_8, 2,
-              CNF_8, 2,
-              MODE_9, 2,
-              CONF_9, 2,
-              MODE_10, 2,
-              CNF_10, 2,
-              MODE_11, 2,
-              CONF_11, 2,
-              MODE_12, 2,
-              CNF_12, 2,
-              MODE_13, 2,
-              CONF_13, 2,
-              MODE_14, 2,
-              CNF_14, 2,
-              MODE_15, 2,
-              CONF_15, 2);
+       unsigned long CRL;
+       unsigned long CRH;
+       unsigned long IDR;
+       unsigned long ODR;
+       unsigned long BSRR;
+       unsigned long BRR;
+       unsigned long LCKR;
+} GPIO_Typedef_t;
 
-       union
-       {
-              unsigned long REG;
-              struct
-              {
-                     BITS(unsigned long,
-                          B0, 1,
-                          B1, 1,
-                          B2, 1,
-                          B3, 1,
-                          B4, 1,
-                          B5, 1,
-                          B6, 1,
-                          B7, 1,
-                          B8, 1,
-                          B9, 1,
-                          B10, 1,
-                          B11, 1,
-                          B12, 1,
-                          B13, 1,
-                          B14, 1,
-                          B15, 1);
-                     unsigned long _reserved : 16;
-              } BITS;
-       } IDR;
-       union
-       {
-              unsigned long REG;
-              struct
-              {
-                     BITS(unsigned long,
-                          B0, 1,
-                          B1, 1,
-                          B2, 1,
-                          B3, 1,
-                          B4, 1,
-                          B5, 1,
-                          B6, 1,
-                          B7, 1,
-                          B8, 1,
-                          B9, 1,
-                          B10, 1,
-                          B11, 1,
-                          B12, 1,
-                          B13, 1,
-                          B14, 1,
-                          B15, 1);
-                     unsigned long _reserved : 16;
-              } BITS;
-       } ODR;
-       union
-       {
-              unsigned long REG;
-              struct
-              {
-                     BITS(unsigned long,
-                          BSR0, 1,
-                          BSR1, 1,
-                          BSR2, 1,
-                          BSR3, 1,
-                          BSR4, 1,
-                          BSR5, 1,
-                          BSR6, 1,
-                          BSR7, 1,
-                          BSR8, 1,
-                          BSR9, 1,
-                          BSR10, 1,
-                          BSR11, 1,
-                          BSR12, 1,
-                          BSR13, 1,
-                          BSR14, 1,
-                          BSR15, 1);
-                     BITS(unsigned long,
-                          BR0, 1,
-                          BR1, 1,
-                          BR2, 1,
-                          BR3, 1,
-                          BR4, 1,
-                          BR5, 1,
-                          BR6, 1,
-                          BR7, 1,
-                          BR8, 1,
-                          BR9, 1,
-                          BR10, 1,
-                          BR11, 1,
-                          BR12, 1,
-                          BR13, 1,
-                          BR14, 1,
-                          BR15, 1);
-              } BITS;
-       } BSRR;
-       union
-       {
-              unsigned long REG;
-              struct
-              {
-                     BITS(unsigned long,
-                          B0, 1,
-                          B1, 1,
-                          B2, 1,
-                          B3, 1,
-                          B4, 1,
-                          B5, 1,
-                          B6, 1,
-                          B7, 1,
-                          B8, 1,
-                          B9, 1,
-                          B10, 1,
-                          B11, 1,
-                          B12, 1,
-                          B13, 1,
-                          B14, 1,
-                          B15, 1);
-                     unsigned long _reserved : 16;
-              } BITS;
-       } BRR;
-       union
-       {
-              unsigned long REG;
-              struct
-              {
-                     BITS(unsigned long,
-                          B0, 1,
-                          B1, 1,
-                          B2, 1,
-                          B3, 1,
-                          B4, 1,
-                          B5, 1,
-                          B6, 1,
-                          B7, 1,
-                          B8, 1,
-                          B9, 1,
-                          B10, 1,
-                          B11, 1,
-                          B12, 1,
-                          B13, 1,
-                          B14, 1,
-                          B15, 1,
-                          B16, 1);
-                     unsigned long _reserved : 15;
-              } BITS;
-       } LCKR;
-} GPIO_Typedef;
-
-#define GPIOA ((GPIO_Typedef *)GPIOA_BASEADDR)
-#define GPIOB ((GPIO_Typedef *)GPIOB_BASEADDR)
-#define GPIOC ((GPIO_Typedef *)GPIOC_BASEADDR)
+#define GPIOA ((GPIO_Typedef_t *)GPIOA_BASEADDR)
+#define GPIOB ((GPIO_Typedef_t *)GPIOB_BASEADDR)
+#define GPIOC ((GPIO_Typedef_t *)GPIOC_BASEADDR)
 
 typedef enum
 {
@@ -203,31 +33,65 @@ typedef enum
        GPIO_MODE_OUTPUT_2HZ_PP = (0 << 2) | 2,
        GPIO_MODE_OUTPUT_2HZ_OPEN_DRAIN = (1 << 2) | 2,
        GPIO_MODE_OUTPUT_2HZ_AF_PP = (2 << 2) | 2,
-       GPIO_MODE_OUTPUT_HZ_AF_OPEN_DRAIN = (3 << 2) | 2,
+       GPIO_MODE_OUTPUT_2HZ_AF_OPEN_DRAIN = (3 << 2) | 2,
 
        GPIO_MODE_OUTPUT_50HZ_PP = (0 << 2) | 3,
        GPIO_MODE_OUTPUT_50HZ_OPEN_DRAIN = (1 << 2) | 3,
        GPIO_MODE_OUTPUT_50HZ_AF_PP = (2 << 2) | 3,
        GPIO_MODE_OUTPUT_50HZ_AF_OPEN_DRAIN = (3 << 2) | 3,
-} GPIO_CR;
+} GPIO_Mode;
+
+typedef enum
+{
+       GPIO_Pin_0 = 0,
+       GPIO_Pin_1,
+       GPIO_Pin_2,
+       GPIO_Pin_3,
+       GPIO_Pin_4,
+       GPIO_Pin_5,
+       GPIO_Pin_6,
+       GPIO_Pin_7,
+       GPIO_Pin_8,
+       GPIO_Pin_9,
+       GPIO_Pin_10,
+       GPIO_Pin_11,
+       GPIO_Pin_12,
+       GPIO_Pin_13,
+       GPIO_Pin_14,
+       GPIO_Pin_15,
+} GPIO_Pin;
 
 typedef struct
 {
-
+       GPIO_Pin Pin;
+       GPIO_Mode Mode;
 } GPIO_PinConfig_t;
+
+typedef enum
+{
+       GPIO_PinReset = LOW,
+       GPIO_PinSet = HIGH
+} GPIO_PinState;
 typedef struct
 {
-
-       struct GPIO_param
-       {
-
-       } param;
-
-       struct GPIO_api
-       {
-
-       } api;
-
+       GPIO_PinConfig_t *GPIO_PinConfig;
+       GPIO_Typedef_t *pGPIOx;
 } GPIO_Handle_t;
+
+/*
+       Initialization and Deinitialization functions
+*/
+void GPIO_Init(GPIO_Handle_t *pGPIOx);
+void GPIO_DeInit(GPIO_Handle_t *pGPIOx);
+
+/*
+       IO Operations function
+*/
+
+GPIO_PinState GPIO_ReadPin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
+void GPIO_WritePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin, GPIO_PinState PinState);
+void GPIO_TogglePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
+void GPIO_EXTI_IRQHandler(GPIO_Pin Pin);
+;
 
 #endif

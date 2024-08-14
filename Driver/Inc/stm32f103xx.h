@@ -1,6 +1,12 @@
 #ifndef __STM32F103xx_H
 #define __STM32F103xx_H
 
+#include <stdio.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define FLASH_BASEADDR 0x08000000U
 #define SRAM_BASEADDR 0x20000000U
 
@@ -66,5 +72,7 @@
 #define RESET 0
 #define HIGH SET
 #define LOW RESET
+
+#define assert_err(expr) (expr ? (void)0 : ({while (1); }))
 
 #endif

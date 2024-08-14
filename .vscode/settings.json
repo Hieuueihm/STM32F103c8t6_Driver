@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "define.h": "c",
-        "stm32f103c8t6.h": "c"
+        "stm32f103c8t6.h": "c",
+        "stm32f103xx.h": "c",
+        "assert.h": "c"
     }
 }

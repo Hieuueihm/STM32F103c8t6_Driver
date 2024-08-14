@@ -37,7 +37,7 @@ $(OUTPUT).bin: $(OUTPUT).elf
 	$(OBJCOPY) -O binary $< $@
 
 clean:
-	rm -rf $(APP_DIR)/*.elf $(APP_DIR)/*.bin $(OBJ_DIR)
+	rm -rf $(APP_DIR)/*.elf $(APP_DIR)/*.bin $(OBJ_DIR) 
 
 burn: $(OUTPUT).bin
 	sudo $(ST_FLASH) write $< $(BASEADDR)
