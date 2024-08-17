@@ -47,14 +47,26 @@ void GPIO_Init(GPIO_Handle_t *pGPIOx)
     {
         GPIOC_CLK_EN();
     }
-    uint8_t PinNumber = pGPIOx->GPIO_PinConfig->Pin;
-    if (PinNumber < 8)
+    uint32_t position = 0x00u;
+    uint32_t ioposition;
+    uint32_t iocurrent;
+
+    while ((pGPIOx->GPIO_PinConfig->Pin >> position) != 0x00u)
     {
-        pGPIOx->pGPIOx->CRL |= ((pGPIOx->GPIO_PinConfig->Mode) << PinNumber);
-    }
-    else
-    {
-        pGPIOx->pGPIOx->CRH |= ((pGPIOx->GPIO_PinConfig->Mode) << (PinNumber - 8));
+        ioposition = (0x01u << position);
+        iocurrent = (uint32_t)(pGPIOx->GPIO_PinConfig->Pin) & ioposition;
+        if (iocurrent == ioposition)
+        {
+            if (position < 8)
+            {
+                pGPIOx->pGPIOx->CRL |= ((pGPIOx->GPIO_PinConfig->Mode) << position * 4);
+            }
+            else
+            {
+                pGPIOx->pGPIOx->CRH |= ((pGPIOx->GPIO_PinConfig->Mode) << (position - 8) * 4);
+            }
+        }
+        position++;
     }
 }
 
@@ -80,7 +92,39 @@ void GPIO_DeInit(GPIO_Handle_t *pGPIOx)
        IO Operations function
 */
 
-GPIO_PinState GPIO_ReadPin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
-void GPIO_WritePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin, GPIO_PinState PinState);
-void GPIO_TogglePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
+GPIO_PinState GPIO_ReadPin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin)
+{
+    assert_err(IS_GPIO_PIN(Pin));
+    if ((pGPIOx->pGPIOx->IDR) != (uint32_t)GPIO_PinReset)
+    {
+        return GPIO_PinSet;
+    }
+    else
+    {
+
+        return GPIO_PinReset;
+    }
+}
+void GPIO_WritePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin, GPIO_PinState PinState)
+{
+    assert_err(IS_GPIO_PIN(Pin));
+    if (PinState == GPIO_PinSet)
+    {
+        pGPIOx->pGPIOx->BSRR |= Pin;
+    }
+    else
+    {
+        pGPIOx->pGPIOx->BSRR |= (uint32_t)(Pin) << 16u;
+    }
+}
+void GPIO_TogglePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin)
+{
+    assert_err(Pin);
+    uint32_t odr = pGPIOx->pGPIOx->ODR;
+
+    /*
+        odr & Pin = 1
+    */
+    pGPIOx->pGPIOx->BSRR = ((odr && Pin) << 16) | (~odr & Pin);
+}
 void GPIO_EXTI_IRQHandler(GPIO_Pin Pin);

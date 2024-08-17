@@ -63,7 +63,7 @@ typedef enum
 
 typedef struct
 {
-       GPIO_Pin Pin;
+       uint32_t Pin;
        GPIO_Mode Mode;
 } GPIO_PinConfig_t;
 
@@ -92,6 +92,13 @@ GPIO_PinState GPIO_ReadPin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
 void GPIO_WritePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin, GPIO_PinState PinState);
 void GPIO_TogglePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
 void GPIO_EXTI_IRQHandler(GPIO_Pin Pin);
-;
+
+#define RCC_BASE 0x40021000
+#define GPIOA_BASE 0x40010800
+
+#define RCC_APB2ENR (*(volatile unsigned int *)(RCC_BASE + 0x18))
+#define GPIOA_CRL (*(volatile unsigned int *)(GPIOA_BASE + 0x00))
+#define GPIOA_ODR (*(volatile unsigned int *)(GPIOA_BASE + 0x0C))
+#define GPIOA_BSRR (*(volatile unsigned int *)(GPIOA_BASE + 0x10))
 
 #endif
