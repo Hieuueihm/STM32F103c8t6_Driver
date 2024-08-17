@@ -5,21 +5,21 @@
 
 typedef struct
 {
-    unsigned long CR;
-    unsigned long CFRG;
-    unsigned long CIR;
-    unsigned long APB2RSTR;
-    unsigned long APB1RSTR;
-    unsigned long AHBENR;
-    unsigned long APB2ENR;
-    unsigned long ABP1ENR;
-    unsigned long BDCR;
-    unsigned long CSR;
-    unsigned long AHBRSTR;
-    unsigned long CFGR2;
-} RCC_Typedef;
+    volatile unsigned int CR;
+    volatile unsigned int CFRG;
+    volatile unsigned int CIR;
+    volatile unsigned int APB2RSTR;
+    volatile unsigned int APB1RSTR;
+    volatile unsigned int AHBENR;
+    volatile unsigned int APB2ENR;
+    volatile unsigned int ABP1ENR;
+    volatile unsigned int BDCR;
+    volatile unsigned int CSR;
+    volatile unsigned int AHBRSTR;
+    volatile unsigned int CFGR2;
+} RCC_Typedef_t;
 
-#define RCC ((RCC_Typedef *)RCC_BASEADDR)
+#define RCC ((RCC_Typedef_t *)RCC_BASEADDR)
 
 // APB2ENR CLK EN
 #define AFIO_CLK_EN() (RCC->APB2ENR |= (1 << 0))

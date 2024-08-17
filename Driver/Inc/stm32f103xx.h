@@ -6,14 +6,15 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stm32f103xx_config.h"
 
-#define FLASH_BASEADDR 0x08000000U
-#define SRAM_BASEADDR 0x20000000U
+#define FLASH_BASEADDR (0x08000000U)
+#define SRAM_BASEADDR (0x20000000U)
 
-#define PERIPHERAL_BASEADDR 0x40000000U
+#define PERIPHERAL_BASEADDR (0x40000000U)
 #define APB1_BASEADDR PERIPHERAL_BASEADDR
-#define APB2_BASEADDR 0x40010000U
-#define AHB_BASEADDR 0x40018000U
+#define APB2_BASEADDR (0x40010000U)
+#define AHB_BASEADDR (0x40018000U)
 
 // APB1 PERI
 
@@ -66,13 +67,11 @@
 #define TIM10_BASEADDR (APB2_BASEADDR + 0x5000U)
 #define TIM11_BASEADDR (APB2_BASEADDR + 0x5400U)
 
-#define RCC_BASEADDR 0x40021000U
+#define RCC_BASEADDR (0x40021000U)
 
 #define SET 1
 #define RESET 0
 #define HIGH SET
 #define LOW RESET
-
-#define assert_err(expr) (expr ? (void)0 : ({while (1); }))
 
 #endif

@@ -6,13 +6,13 @@
 
 typedef struct
 {
-       unsigned long CRL;
-       unsigned long CRH;
-       unsigned long IDR;
-       unsigned long ODR;
-       unsigned long BSRR;
-       unsigned long BRR;
-       unsigned long LCKR;
+       volatile unsigned int CRL;
+       volatile unsigned int CRH;
+       volatile unsigned int IDR;
+       volatile unsigned int ODR;
+       volatile unsigned int BSRR;
+       volatile unsigned int BRR;
+       volatile unsigned int LCKR;
 } GPIO_Typedef_t;
 
 #define GPIOA ((GPIO_Typedef_t *)GPIOA_BASEADDR)
@@ -43,22 +43,22 @@ typedef enum
 
 typedef enum
 {
-       GPIO_Pin_0 = 0,
-       GPIO_Pin_1,
-       GPIO_Pin_2,
-       GPIO_Pin_3,
-       GPIO_Pin_4,
-       GPIO_Pin_5,
-       GPIO_Pin_6,
-       GPIO_Pin_7,
-       GPIO_Pin_8,
-       GPIO_Pin_9,
-       GPIO_Pin_10,
-       GPIO_Pin_11,
-       GPIO_Pin_12,
-       GPIO_Pin_13,
-       GPIO_Pin_14,
-       GPIO_Pin_15,
+       GPIO_PIN_0 = 0,
+       GPIO_PIN_1,
+       GPIO_PIN_2,
+       GPIO_PIN_3,
+       GPIO_PIN_4,
+       GPIO_PIN_5,
+       GPIO_PIN_6,
+       GPIO_PIN_7,
+       GPIO_PIN_8,
+       GPIO_PIN_9,
+       GPIO_PIN_10,
+       GPIO_PIN_11,
+       GPIO_PIN_12,
+       GPIO_PIN_13,
+       GPIO_PIN_14,
+       GPIO_PIN_15,
 } GPIO_Pin;
 
 typedef struct
@@ -69,36 +69,22 @@ typedef struct
 
 typedef enum
 {
-       GPIO_PinReset = LOW,
-       GPIO_PinSet = HIGH
+       GPIO_PIN_RESET = 0u,
+       GPIO_PIN_SET
 } GPIO_PinState;
-typedef struct
-{
-       GPIO_PinConfig_t *GPIO_PinConfig;
-       GPIO_Typedef_t *pGPIOx;
-} GPIO_Handle_t;
-
 /*
        Initialization and Deinitialization functions
 */
-void GPIO_Init(GPIO_Handle_t *pGPIOx);
-void GPIO_DeInit(GPIO_Handle_t *pGPIOx);
+void GPIO_Init(GPIO_Typedef_t *GPIOx, GPIO_PinConfig_t *PinConfig);
+void GPIO_DeInit(GPIO_Typedef_t *GPIOx);
 
-/*
-       IO Operations function
-*/
+// /*
+//        IO Operations function
+// */
 
-GPIO_PinState GPIO_ReadPin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
-void GPIO_WritePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin, GPIO_PinState PinState);
-void GPIO_TogglePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin);
+GPIO_PinState GPIO_ReadPin(GPIO_Typedef_t *pGPIOx, GPIO_Pin Pin);
+void GPIO_WritePin(GPIO_Typedef_t *GPIOx, GPIO_Pin Pin, GPIO_PinState PinState);
+void GPIO_TogglePin(GPIO_Typedef_t *pGPIOx, GPIO_Pin Pin);
 void GPIO_EXTI_IRQHandler(GPIO_Pin Pin);
-
-#define RCC_BASE 0x40021000
-#define GPIOA_BASE 0x40010800
-
-#define RCC_APB2ENR (*(volatile unsigned int *)(RCC_BASE + 0x18))
-#define GPIOA_CRL (*(volatile unsigned int *)(GPIOA_BASE + 0x00))
-#define GPIOA_ODR (*(volatile unsigned int *)(GPIOA_BASE + 0x0C))
-#define GPIOA_BSRR (*(volatile unsigned int *)(GPIOA_BASE + 0x10))
 
 #endif

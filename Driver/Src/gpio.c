@@ -26,105 +26,110 @@
     (MODE == GPIO_MODE_OUTPUT_50HZ_AF_PP) ||         \
     (MODE == GPIO_MODE_OUTPUT_50HZ_AF_OPEN_DRAIN))
 
-void GPIO_Init(GPIO_Handle_t *pGPIOx)
+void GPIO_Init(GPIO_Typedef_t *GPIOx, GPIO_PinConfig_t *PinConfig)
 {
-    assert_err(IS_GPIO_INSTANCE(pGPIOx->pGPIOx));
-    assert_err(IS_GPIO_MODE(pGPIOx->GPIO_PinConfig->Mode));
-    assert_err(IS_GPIO_PIN(pGPIOx->GPIO_PinConfig->Pin));
-
+    assert_param(IS_GPIO_INSTANCE(GPIOx));
+    assert_param(IS_GPIO_PIN(PinConfig->Pin));
+    assert_param(IS_GPIO_MODE(PinConfig->Mode));
     /*
         enable clock for GPIO
     */
-    if (pGPIOx->pGPIOx == GPIOA)
+    if (GPIOx == GPIOA)
     {
         GPIOA_CLK_EN();
     }
-    else if (pGPIOx->pGPIOx == GPIOB)
+    else if (GPIOx == GPIOB)
     {
         GPIOB_CLK_EN();
     }
-    else if (pGPIOx->pGPIOx == GPIOC)
+    else if (GPIOx == GPIOC)
     {
         GPIOC_CLK_EN();
     }
-    uint32_t position = 0x00u;
-    uint32_t ioposition;
-    uint32_t iocurrent;
 
-    while ((pGPIOx->GPIO_PinConfig->Pin >> position) != 0x00u)
+    uint32_t position = 0x00u; // the position of io pin -> determine the pin of io
+    uint32_t ioposition;       // 0 -> 15 corresponding the number of io pin
+    uint32_t iocurrent;        // the current io pin
+    uint32_t mode = PinConfig->Mode;
+
+    while ((PinConfig->Pin >> position) != 0x00u) // still io pin not implemented
     {
-        ioposition = (0x01u << position);
-        iocurrent = (uint32_t)(pGPIOx->GPIO_PinConfig->Pin) & ioposition;
+        ioposition = (uint32_t)(0x01u << position);
+        iocurrent = (uint32_t)(PinConfig->Pin) & ioposition;
         if (iocurrent == ioposition)
         {
-            if (position < 8)
+            if (iocurrent < 8)
             {
-                pGPIOx->pGPIOx->CRL |= ((pGPIOx->GPIO_PinConfig->Mode) << position * 4);
+                GPIOx->CRL &= ~(0x0F << (iocurrent * 4));
+                GPIOx->CRL |= (mode << iocurrent * 4);
             }
             else
             {
-                pGPIOx->pGPIOx->CRH |= ((pGPIOx->GPIO_PinConfig->Mode) << (position - 8) * 4);
+                GPIOx->CRH &= ~(0x0F << ((iocurrent - 8) * 4));
+                GPIOx->CRH |= (mode << (iocurrent - 8) * 4);
             }
         }
         position++;
     }
 }
 
-void GPIO_DeInit(GPIO_Handle_t *pGPIOx)
+void GPIO_DeInit(GPIO_Typedef_t *GPIOx)
 {
-    assert_err(IS_GPIO_INSTANCE(pGPIOx->pGPIOx));
-    if (pGPIOx->pGPIOx == GPIOA)
+    assert_param(IS_GPIO_INSTANCE(GPIOx));
+    if (GPIOx == GPIOA)
     {
         GPIOA_CLK_DIS();
     }
-    else if (pGPIOx->pGPIOx == GPIOB)
+    else if (GPIOx == GPIOB)
     {
         GPIOB_CLK_DIS();
     }
-    else if (pGPIOx->pGPIOx == GPIOC)
+    else if (GPIOx == GPIOC)
     {
         GPIOC_CLK_DIS();
     }
-    memset(pGPIOx, 0, sizeof(GPIO_Handle_t));
+    memset(GPIOx, 0, sizeof(GPIO_Typedef_t));
 }
 
 /*
        IO Operations function
 */
 
-GPIO_PinState GPIO_ReadPin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin)
+GPIO_PinState GPIO_ReadPin(GPIO_Typedef_t *GPIOx, GPIO_Pin Pin)
 {
-    assert_err(IS_GPIO_PIN(Pin));
-    if ((pGPIOx->pGPIOx->IDR) != (uint32_t)GPIO_PinReset)
+    assert_param(IS_GPIO_INSTANCE(GPIOx));
+    assert_param(IS_GPIO_PIN(Pin));
+    if ((GPIOx->IDR) != (uint32_t)GPIO_PIN_RESET)
     {
-        return GPIO_PinSet;
+        return GPIO_PIN_SET;
     }
     else
     {
 
-        return GPIO_PinReset;
+        return GPIO_PIN_RESET;
     }
 }
-void GPIO_WritePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin, GPIO_PinState PinState)
+void GPIO_WritePin(GPIO_Typedef_t *GPIOx, GPIO_Pin Pin, GPIO_PinState PinState)
 {
-    assert_err(IS_GPIO_PIN(Pin));
-    if (PinState == GPIO_PinSet)
+    assert_param(IS_GPIO_INSTANCE(GPIOx));
+    assert_param(IS_GPIO_PIN(Pin));
+    if (PinState == GPIO_PIN_SET)
     {
-        pGPIOx->pGPIOx->BSRR |= Pin;
+        GPIOx->BSRR |= (uint32_t)(1 << Pin);
     }
     else
     {
-        pGPIOx->pGPIOx->BSRR |= (uint32_t)(Pin) << 16u;
+        GPIOx->BSRR |= (uint32_t)(1 << (Pin + 16));
     }
 }
-void GPIO_TogglePin(GPIO_Handle_t *pGPIOx, GPIO_Pin Pin)
+void GPIO_TogglePin(GPIO_Typedef_t *GPIOx, GPIO_Pin Pin)
 {
-    assert_err(Pin);
-    uint32_t odr = pGPIOx->pGPIOx->ODR;
-
-    /*
-        odr & Pin = 1
-    */
-    pGPIOx->pGPIOx->BSRR = ((odr && Pin) << 16) | (~odr & Pin);
+    assert_param(IS_GPIO_INSTANCE(GPIOx));
+    assert_param(IS_GPIO_PIN(Pin));
+    if (Pin != 0)
+    {
+        // Toggle the pin - XOR
+        GPIOx->ODR ^= (uint32_t)(1 << Pin);
+    }
 }
 void GPIO_EXTI_IRQHandler(GPIO_Pin Pin);
