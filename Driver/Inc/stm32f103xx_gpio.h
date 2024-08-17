@@ -1,8 +1,8 @@
-#ifndef __GPIO_H
-#define __GPIO_H
+#ifndef __STM32F103XX_GPIO_H
+#define __STM32F103XX_GPIO_H
 
 #include "stm32f103xx.h"
-#include "rcc.h"
+#include "stm32f103xx_rcc.h"
 
 typedef struct
 {

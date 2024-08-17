@@ -1,5 +1,5 @@
-#ifndef __RCC_H
-#define __RCC_H
+#ifndef __STM32F013XX_RCC_H
+#define __STM32F013XX_RCC_H
 
 #include "stm32f103xx.h"
 

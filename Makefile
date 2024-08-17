@@ -41,6 +41,9 @@ CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
 CFLAGS += -I$(INC_DIR) 
 CFLAGS += -Wl,--gc-sections
 
+
+FL_ADDR ?= 0x8000000
+
 build: $(BUILD_DIR)/$(PROJECT).elf
 
 # Compile
@@ -65,6 +68,6 @@ clean:
 
 # Flash
 flash: $(BUILD_DIR)/$(PROJECT).bin
-	sudo $(ST_FLASH) write $(BUILD_DIR)/$(PROJECT).bin 0x8000000
+	sudo $(ST_FLASH) write $(BUILD_DIR)/$(PROJECT).bin ${FL_ADDR}
 
 .PHONY: build clean flash

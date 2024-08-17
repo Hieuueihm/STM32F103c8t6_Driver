@@ -1,30 +1,30 @@
-#include "gpio.h"
+#include "stm32f103xx_gpio.h"
 
 /*
        Initialization and Deinitialization functions
 */
 
-#define IS_GPIO_PIN(PIN) (PIN >= GPIO_Pin_0 && PIN <= GPIO_Pin_15)
-#define IS_GPIO_INSTANCE(INSTANCE) ((INSTANCE == GPIOA) || (INSTANCE == GPIOB) || (INSTANCE == GPIOC))
-#define IS_GPIO_MODE(MODE) (                         \
-    (MODE == GPIO_MODE_INPUT_ANALOG) ||              \
-    (MODE == GPIO_MODE_INPUT_FLOATING) ||            \
-    (MODE == GPIO_MODE_INPUT_PU_PD) ||               \
-                                                     \
-    (MODE == GPIO_MODE_OUTPUT_10HZ_PP) ||            \
-    (MODE == GPIO_MODE_OUTPUT_10HZ_OPEN_DRAIN) ||    \
-    (MODE == GPIO_MODE_OUTPUT_10HZ_AF_OPEN_DRAIN) || \
-    (MODE == GPIO_MODE_OUTPUT_10HZ_AF_PP) ||         \
-                                                     \
-    (MODE == GPIO_MODE_OUTPUT_2HZ_PP) ||             \
-    (MODE == GPIO_MODE_OUTPUT_2HZ_OPEN_DRAIN) ||     \
-    (MODE == GPIO_MODE_OUTPUT_2HZ_AF_PP) ||          \
-    (MODE == GPIO_MODE_OUTPUT_2HZ_AF_OPEN_DRAIN) ||  \
-                                                     \
-    (MODE == GPIO_MODE_OUTPUT_50HZ_PP) ||            \
-    (MODE == GPIO_MODE_OUTPUT_50HZ_OPEN_DRAIN) ||    \
-    (MODE == GPIO_MODE_OUTPUT_50HZ_AF_PP) ||         \
-    (MODE == GPIO_MODE_OUTPUT_50HZ_AF_OPEN_DRAIN))
+#define IS_GPIO_PIN(__PIN__) (__PIN__ >= GPIO_Pin_0 && __PIN__ <= GPIO_Pin_15)
+#define IS_GPIO_INSTANCE(__INSTANCE__) ((__INSTANCE__ == GPIOA) || (__INSTANCE__ == GPIOB) || (__INSTANCE__ == GPIOC))
+#define IS_GPIO_MODE(__MODE__) (                         \
+    (__MODE__ == GPIO_MODE_INPUT_ANALOG) ||              \
+    (__MODE__ == GPIO_MODE_INPUT_FLOATING) ||            \
+    (__MODE__ == GPIO_MODE_INPUT_PU_PD) ||               \
+                                                         \
+    (__MODE__ == GPIO_MODE_OUTPUT_10HZ_PP) ||            \
+    (__MODE__ == GPIO_MODE_OUTPUT_10HZ_OPEN_DRAIN) ||    \
+    (__MODE__ == GPIO_MODE_OUTPUT_10HZ_AF_OPEN_DRAIN) || \
+    (__MODE__ == GPIO_MODE_OUTPUT_10HZ_AF_PP) ||         \
+                                                         \
+    (__MODE__ == GPIO_MODE_OUTPUT_2HZ_PP) ||             \
+    (__MODE__ == GPIO_MODE_OUTPUT_2HZ_OPEN_DRAIN) ||     \
+    (__MODE__ == GPIO_MODE_OUTPUT_2HZ_AF_PP) ||          \
+    (__MODE__ == GPIO_MODE_OUTPUT_2HZ_AF_OPEN_DRAIN) ||  \
+                                                         \
+    (__MODE__ == GPIO_MODE_OUTPUT_50HZ_PP) ||            \
+    (__MODE__ == GPIO_MODE_OUTPUT_50HZ_OPEN_DRAIN) ||    \
+    (__MODE__ == GPIO_MODE_OUTPUT_50HZ_AF_PP) ||         \
+    (__MODE__ == GPIO_MODE_OUTPUT_50HZ_AF_OPEN_DRAIN))
 
 void GPIO_Init(GPIO_Typedef_t *GPIOx, GPIO_PinConfig_t *PinConfig)
 {
