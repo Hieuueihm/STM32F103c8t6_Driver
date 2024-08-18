@@ -28,10 +28,17 @@ void GPIOA_Init(void)
 }
 int main()
 {
+
+    GPIO_Clock_Control(GPIOA, GPIO_EN_CLK);
     GPIO_PinConfig_t GPIO_config;
-    GPIO_config.Pin = GPIO_PIN_2 | GPIO_PIN_1;
+    GPIO_config.Pin = GPIO_PIN_2;
     GPIO_config.Mode = GPIO_MODE_OUTPUT_50HZ_PP;
     GPIO_Init(GPIOA, &GPIO_config);
+
+    GPIO_PinConfig_t GPIO_config1;
+    GPIO_config1.Pin = GPIO_PIN_1;
+    GPIO_config1.Mode = GPIO_MODE_INPUT_PD;
+    GPIO_Init(GPIOA, &GPIO_config1);
     // GPIOA_Init(); // Gọi hàm khởi tạo GPIOA
     // // GPIOA_Init();
     // RCC->APB2ENR |= (1 << 2);
@@ -42,7 +49,7 @@ int main()
     // GPIOA->CRL &= ~(0xF << 4); // Xóa cấu hình hiện tại của PA1 (bit 4-7)
     // GPIOA->CRL |= (0x3 << 4);  // MODE = 11 (Output mode, 50MHz)
     // GPIOA->CRL |= (0x0 << 6);
-    GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
+    // GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
 
     while (1)
     {
@@ -62,11 +69,11 @@ int main()
         // GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
         // delay_ms(500);
         // GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
-        GPIO_TogglePin(GPIOA, GPIO_PIN_1);
-        delay_ms(500);
+        // GPIO_TogglePin(GPIOA, GPIO_PIN_1);
+        // delay_ms(500);
         GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
         delay_ms(500);
         GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
         delay_ms(500);
-    }
+        }
 }

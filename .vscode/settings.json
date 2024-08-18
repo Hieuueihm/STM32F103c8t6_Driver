@@ -4,6 +4,13 @@
         "stm32f103c8t6.h": "c",
         "stm32f103xx.h": "c",
         "assert.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "functional": "c",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "ranges": "cpp",
+        "utility": "cpp",
+        "stm32f103xx_rcc.h": "c"
     }
 }

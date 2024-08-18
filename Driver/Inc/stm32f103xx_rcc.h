@@ -111,4 +111,73 @@ typedef struct
 #define PWR_CLK_DIS() (RCC->APB1ENR &= ~(1 << 28))
 #define DAC_CLK_DIS() (RCC->APB1ENR &= ~(1 << 29))
 
+/*
+    Control Register define
+*/
+
+#define RCC_CR_HSE_ON ((uint32_t)(1 << 16))
+#define RCC_CR_HSE_READY ((uint32_t)(1 << 17))
+#define RCC_CR_HSE_BYSPASS_ON ((uint32_t)(1 << 18))
+
+#define RCC_CR_HSI_ON ((uint32_t)(1 << 0))
+#define RCC_CR_HSI_READY ((uint32_t)(1 << 1))
+
+#define RCC_CR_PLL_ON ((uint32_t)(1 << 24))
+#define RCC_CR_PLL_LOCKED ((uint32_t)(1 << 25))
+
+#define IS_RCC_HSE(__HSE__) ((__HSE__ == RCC_CR_HSE_ON) ||         \
+                             (__HSE__ == RCC_CR_HSE_BYSPASS_ON) || \
+                             (__HSE__ == RCC_CR_HSE_READY))
+
+/*
+    Configuration register define
+*/
+#define RCC_CFGR_SYSCLK_SELECTED ((uitn32_t)1 << 26)
+#define RCC_CFGR_HSICLK_SELECTED ((uint32_t)((1 << 26) | (1 << 24)))
+#define RCC_CFGR_HSECLK_SELECTED ((uint32_t)((1 << 26) | (1 << 25)))
+#define RCC_CFGR_PLLDIV2_SELECTED ((uint32_t)((1 << 26) | (1 << 25) | (1 << 24)))
+#define RCC_CFGR_USB_PRESCALER_NOT_DIVIDED ((uint32_t)(1 << 22))
+
+#define RCC_CFGR_PLL_MUL_3 ((uint32_t)(1 << 18))
+#define RCC_CFGR_PLL_MUL_4 ((uint32_t)(1 << 19))
+#define RCC_CFGR_PLL_MUL_4 ((uint32_t)(1 << 19))
+#define RCC_CFGR_PLL_MUL_5 ((uint32_t)((1 << 19) | (1 << 18)))
+#define RCC_CFGR_PLL_MUL_6 ((uint32_t)((1 << 20)))
+#define RCC_CFGR_PLL_MUL_7 ((uint32_t)((1 << 20) | (1 << 18)))
+#define RCC_CFGR_PLL_MUL_8 ((uint32_t)((1 << 20) | (1 << 19)))
+#define RCC_CFGR_PLL_MUL_9 ((uint32_t)((1 << 20) | (1 << 19) | (1 << 18)))
+#define RCC_CFGR_PLL_MUL_10 ((uint32_t)((1 << 21)))
+#define RCC_CFGR_PLL_MUL_11 ((uint32_t)((1 << 21) | (1 << 18)))
+#define RCC_CFGR_PLL_MUL_12 ((uint32_t)((1 << 21) | (1 << 19)))
+#define RCC_CFGR_PLL_MUL_13 ((uint32_t)((1 << 21) | (1 << 19) | (1 << 18)))
+#define RCC_CFGR_PLL_MUL_14 ((uint32_t)((1 << 21) | (1 << 20)))
+#define RCC_CFGR_PLL_MUL_15 ((uint32_t)((1 << 21) | (1 << 20) | (1 << 18)))
+#define RCC_CFGR_PLL_MUL_16 ((uint32_t)((1 << 21) | (1 << 20) | (1 << 19)))
+
+#define PLL_CFGR_HSECLK_DIV_2 ((uint32_t)(1 << 17))
+#define PLL_CFGR_PLL_SRC ((uint32_t)(1 << 16))
+
+#define PLL_CFGR_ADC_DIV_4 ((uint32_t)(1 << 14))
+#define PLL_CFGR_ADC_DIV_6 ((uint32_t)(1 << 15))
+#define PLL_CFGR_ADC_DIV_8 ((uint32_t)((1 << 15) | (1 < 14)))
+
+#define PLL_CFGR_APB2_DIV_2 ((uint32_t)(1 << 13))
+#define PLL_CFGR_APB2_DIV_4 ((uint32_t)((1 << 13) | (1 << 11)))
+#define PLL_CFGR_APB2_DIV_8 ((uint32_t)((1 << 13) | (1 << 12)))
+#define PLL_CFGR_APB2_DIV_16 DEFINE_UINT32_MASK(13, 12, 11)
+
+#define PLL_CFGR_APB1_DIV_2 DEFINE_UINT32_MASK(13)
+#define PLL_CFGR_APB1_DIV_4 DEFINE_UINT32_MASK(13, 11)
+#define PLL_CFGR_APB1_DIV_8 DEFINE_UINT32_MASK(13. 12)
+#define PLL_CFGR_APB1_DIV_16 DEFINE_UINT32_MASK(13. 12, 11)
+
+#define PLL_CFGR_AHB_DIV_2 DEFINE_UINT32_MASK(7)
+#define PLL_CFGR_AHB_DIV_4 DEFINE_UINT32_MASK(7, 4)
+#define PLL_CFGR_AHB_DIV_8 DEFINE_UINT32_MASK(7, 5)
+#define PLL_CFGR_AHB_DIV_16 DEFINE_UINT32_MASK(7, 5, 4)
+#define PLL_CFGR_AHB_DIV_64 DEFINE_UINT32_MASK(7, 6)
+#define PLL_CFGR_AHB_DIV_128 DEFINE_UINT32_MASK(7, 6, 4)
+#define PLL_CFGR_AHB_DIV_256 DEFINE_UINT32_MASK(7, 6, 5)
+#define PLL_CFGR_AHB_DIV_512 DEFINE_UINT32_MASK(7, 6, 5, 4)
+
 #endif

@@ -4,16 +4,15 @@ DRIVER_DIR = Driver
 SRC_DIR = $(DRIVER_DIR)/Src
 INC_DIR = $(DRIVER_DIR)/Inc
 
-# Directories for object files and build output
 OBJ_DIR = Objects
 BUILD_DIR = Build
 
-# Create the necessary directories
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
+
 
 # Source and object files
 SOURCES  = ${MAIN_DIR}/main.c
@@ -41,10 +40,9 @@ CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
 CFLAGS += -I$(INC_DIR) 
 CFLAGS += -Wl,--gc-sections
 
-
 FL_ADDR ?= 0x8000000
 
-build: $(BUILD_DIR)/$(PROJECT).elf
+build: $(BUILD_DIR)/$(PROJECT).elf $(ASSEMBLY_DIR)
 
 # Compile
 $(BUILD_DIR)/$(PROJECT).elf: $(OBJ_DIR) $(BUILD_DIR) $(OBJS)
@@ -62,9 +60,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 $(OBJ_DIR)/%.o: $(START_UP_DIR)/%.s
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Remove binary files
+
+
 clean:
-	rm -f $(OBJ_DIR)/*.o $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.hex
+	rm -f $(OBJ_DIR)/*.o $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.hex 
 
 # Flash
 flash: $(BUILD_DIR)/$(PROJECT).bin
