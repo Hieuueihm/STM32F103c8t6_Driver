@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f103xx_config.h"
+#pragma once
 
 #define FLASH_BASEADDR (0x08000000U)
 #define SRAM_BASEADDR (0x20000000U)

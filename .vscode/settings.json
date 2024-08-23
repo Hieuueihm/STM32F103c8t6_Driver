@@ -11,6 +11,7 @@
         "initializer_list": "cpp",
         "ranges": "cpp",
         "utility": "cpp",
-        "stm32f103xx_rcc.h": "c"
+        "stm32f103xx_rcc.h": "c",
+        "string.h": "c"
     }
 }

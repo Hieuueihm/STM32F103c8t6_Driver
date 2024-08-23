@@ -1,6 +1,8 @@
 #ifndef __STM32F103xx_CONFIG_H
 #define __STM32F103xx_CONFIG_H
 
+#pragma once
+
 #define PARTIAL_ASSERT 1
 
 #ifdef PARTIAL_ASSERT
