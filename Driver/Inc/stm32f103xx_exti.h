@@ -1,6 +1,7 @@
 #ifndef __STM32F103XX_EXTI_H
 #define __STM32F103XX_EXTI_H
 #include "stm32f103xx.h"
+#pragma once
 
 typedef struct
 {

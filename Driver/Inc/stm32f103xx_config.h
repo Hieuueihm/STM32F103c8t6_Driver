@@ -8,6 +8,11 @@
 #ifdef PARTIAL_ASSERT
 #define assert_param(expr) ((void)0)
 #endif
+
+/*
+    Example
+    PARAM_COUNT(1, 2, 3) => PARAM_COUNT_MASK(1, 2, 3, 32, 31 .. N) N -> N = 3
+*/
 #define PARAMS_COUNT_MASK(                                                                     \
     _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, \
     _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, N, ...) N
@@ -16,6 +21,7 @@
                                             32, 31, 30, 29,                                                                   \
                                             28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, \
                                             7, 6, 5, 4, 3, 2, 1, 0)
+
 /*
   for (int i = 4; i <= 32; ++i)
     {
@@ -60,6 +66,7 @@
 #define DEFINE_MASK(size, ...) BITS_MASK(PARAMS_COUNT(__VA_ARGS__), size, __VA_ARGS__)
 
 #define DEFINE_UINT32_MASK(...) DEFINE_MASK(uint32_t, __VA_ARGS__)
+#define DEFINE_UINT8_MASK(...) DEFINE_MASK(uint8_t, __VA_ARGS__)
 #define DEFINE_UCHAR_MASK(...) DEFINE_MASK(unsigned char, __VA_ARGS__)
 
 #endif

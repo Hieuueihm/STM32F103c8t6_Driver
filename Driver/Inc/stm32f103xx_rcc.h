@@ -231,4 +231,8 @@ typedef struct
 #define PLL_APB1RSTR_TIM3_RST DEFINE_UINT32_MASK(1)
 #define PLL_APB1RSTR_TIM2_RST DEFINE_UINT32_MASK(0)
 
+/*
+    Backup Domain Control Register -- BDCR
+*/
+
 #endif

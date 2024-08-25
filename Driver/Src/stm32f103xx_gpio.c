@@ -159,4 +159,46 @@ void GPIO_TogglePin(GPIO_Typedef_t *GPIOx, GPIO_Pin Pin)
 
     GPIOx->ODR ^= (uint32_t)(1 << Pin);
 }
-void GPIO_EXTI_IRQHandler(GPIO_Pin Pin);
+
+#define EVCR_PORTPINCONFIG_MASK ((uint16_t)0xFF80)
+
+void GPIO_EventOutputConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource)
+{
+    uint32_t temp_reg = 0x00;
+
+    assert_param(IS_GPIO_PIN_SOURCE(GPIO_PinSource));
+    assert_param(IS_GPIO_EVENTOUT_PORT_SOURCE(GPIO_PortSource));
+
+    temp_reg = AFIO->EVCR;
+
+    temp_reg &= EVCR_PORTPINCONFIG_MASK; // clear the previous config;
+
+    temp_reg |= (uint32_t)GPIO_PortSource << (0x04);
+    temp_reg |= GPIO_PinSource;
+
+    AFIO->EVCR = temp_reg;
+}
+void GPIO_PinRemapConfig(uint32_t GPIO_Remap)
+{
+    uint32_t temp_reg = 0x00;
+    assert_param(IS_GPIO_REMAP(GPIO_Remap));
+
+    // AFIO->MAPR2 is marked by 0x8zzzzzzzz
+    if ((GPIO_Remap & 0x80000000) == 0x80000000)
+    {
+        temp_reg = AFIO->MAPR2;
+    }
+    else
+    {
+        temp_reg = AFIO->MAPR;
+    }
+    temp_reg = GPIO_Remap;
+    if ((GPIO_Remap & 0x80000000) == 0x80000000)
+    {
+        AFIO->MAPR2 = temp_reg;
+    }
+    else
+    {
+        AFIO->MAPR = temp_reg;
+    }
+}

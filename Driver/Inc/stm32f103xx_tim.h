@@ -1,5 +1,6 @@
 #ifndef __STM32F103XX_TIM_H
 #define __STM32F103XX_TIM_H
+#pragma once
 
 #include "stm32f103xx.h"
 typedef struct
